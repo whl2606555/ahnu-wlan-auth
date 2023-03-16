@@ -10,7 +10,7 @@ async fn main() {
         .build()
         .unwrap();
 
-    fast_log::init(FastlogConfig::new().console().chan_len(Some(100000))).unwrap();
+    fast_log::init(FastlogConfig::new().console().chan_len(Some(100000)).level(log::LevelFilter::Info)).unwrap();
 
     let author = AhnuWlanAuthenticator::new(
         config.get("login.username").unwrap(),
@@ -22,7 +22,9 @@ async fn main() {
         let mut is_success = true;
         if !AhnuWlanAuthenticator::is_web_avail().await {
             match author.try_auth().await {
-                Ok(_) => (),
+                Ok(_) => {
+                    log::info!("登录成功");
+                },
                 Err(e) => {
                     log::error!("尝试登录校园网失败: {}", e);
                     is_success = false;

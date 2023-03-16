@@ -52,6 +52,8 @@ impl AhnuWlanAuthenticator {
         if response_json["result"].as_i64().unwrap_or(0) != 1 {
             return Err(response_json["msg"].as_str().unwrap_or("").to_owned());
         }
+
+        log::info!("登录成功!返回信息: {}",response_json.to_string());
         Ok(())
     }
 
