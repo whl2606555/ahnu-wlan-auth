@@ -1,0 +1,30 @@
+on:
+  - workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+     - name: Checkout
+       uses: actions/checkout@master
+     - name: Build
+       id: compile
+       uses: heroku/rust-cargo-musl-action@v1
+       with:
+         command: 'build'
+     - name: Copy Executable File
+       uses: canastro/copy-file-action@master
+       with:
+        source: ${{ steps.compile.outputs.release-dir }}ahnu-wlan-auth
+        target: ahnu-wlan-auth
+     - name: Install Zip
+       uses: montudor/action-zip@v1
+     - name: Zip Files
+       run: zip -qq -r publish.zip ahnu-wlan-auth config.toml
+     - name: Publish
+       uses: softprops/action-gh-release@v1
+       with: 
+         files: |
+           publish.zip
+           ahnu-wlan-auth
+         tag_name: Autorelease-v${{ github.run_number }}
