@@ -21,6 +21,7 @@ async fn main() {
     loop {
         let mut is_success = true;
         if !AhnuWlanAuthenticator::is_web_avail().await {
+            log::info!("网络不可用，尝试登录中...");
             match author.try_auth().await {
                 Ok(_) => {
                     log::info!("登录成功");
@@ -30,6 +31,8 @@ async fn main() {
                     is_success = false;
                 }
             }
+        }else{
+            log::info!("网络可用，无需登录");
         }
 
         tokio::time::sleep(std::time::Duration::from_secs(if is_success {
