@@ -6,6 +6,7 @@ lazy_static::lazy_static! {
     static ref JSONP_REGEX:regex::Regex = Regex::new("dr1003\\((.+)\\)").unwrap();
     static ref HTTP_CLIENT: reqwest::Client = {
         reqwest::Client::builder()
+        .timeout(std::time::Duration::from_secs(30))
         .redirect(reqwest::redirect::Policy::none())
         .user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36")
     .build()
