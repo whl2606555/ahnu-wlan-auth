@@ -35,11 +35,7 @@ async fn main() {
             log::info!("网络可用，无需登录");
         }
 
-        tokio::time::sleep(std::time::Duration::from_secs(if is_success {
-            300
-        } else {
-            5
-        }))
+        tokio::time::sleep(std::time::Duration::from_secs(5))
         .await;
     }
 }
