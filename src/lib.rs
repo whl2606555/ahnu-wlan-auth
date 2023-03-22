@@ -82,7 +82,7 @@ impl AhnuWlanAuthenticator {
 
     pub async fn is_web_avail() -> bool {
         let response = match HTTP_CLIENT
-            .get("http://acs.m.taobao.com/gw/mtop.common.getTimestamp/")
+            .get("http://www.msftconnecttest.com/connecttest.txt")
             .send()
             .await
         {
@@ -94,9 +94,13 @@ impl AhnuWlanAuthenticator {
             log::info!("StatusCode: {}", response.status());
         }
 
-        if response.status().is_redirection() {
+        if !response.status().is_success() {
             return false;
         }
-        true
+        let response = match response.text().await {
+            Ok(v) => v,
+            Err(_) => return false,
+        };
+        response == "Microsoft Connect Test"
     }
 }

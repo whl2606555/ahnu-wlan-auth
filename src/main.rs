@@ -19,7 +19,6 @@ async fn main() {
     );
 
     loop {
-        let mut is_success = true;
         if !AhnuWlanAuthenticator::is_web_avail().await {
             log::info!("网络不可用，尝试登录中...");
             match author.try_auth().await {
@@ -28,7 +27,6 @@ async fn main() {
                 },
                 Err(e) => {
                     log::error!("尝试登录校园网失败: {}", e);
-                    is_success = false;
                 }
             }
         }else{
